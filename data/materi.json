@@ -1,0 +1,176 @@
+[
+  {
+    "id": 1,
+    "title": "Pengenalan Rehabilitasi Narkoba",
+    "type": "video",
+    "duration": "4",
+    "icon": "🎥",
+    "description": "Memahami konsep dasar rehabilitasi dan tahapan proses pemulihan.",
+    "fullDescription": "Rehabilitasi narkoba adalah proses pemulihan komprehensif bagi individu yang mengalami penyalahgunaan atau kecanduan narkotika bukan sekadar perawatan medis, tetapi juga pemulihan psikologis dan sosial sehingga mereka dapat kembali hidup sehat, mandiri, dan produktif tanpa ketergantungan.\n\nBNN RI memiliki 1 Balai Besar Rehabilitasi  dan 5 Balai dan Loka yaitu : \nBalai Besar Rehabilitasi di Lido - Jawa Barat (081315664305),\nDi Sulawesi Selatan - Makassar Balai Rehabilitasi Baddoka        (0411513213),\nDi Kalimantan Timur - Samarinda Balai Rehabilitasi Tanah Merah      (082250261030)\nDi Sumatera Utara Loka rehabilitasi  Deli Serdang (081220052012)\nDi kepulauan Riau Loka Rehabilitasi Batam (081277773794)\n\nDi Lampung Loka Rehabilitasi Kalianda (08117290922)\n\n\nKlinik Pratama BNN Kota Manado \n(0431-8800358)\n\n\nSemua menyediakan sarana dan prasarana rehabilitasi dengan kualitas tinggi dan gratis.",
+    "videoUrl": "https://www.youtube.com/embed/qcCe8nfXP3A",
+    "imageUrl": "/images/pengenalan.rehabilitasi.png",
+    "category": "program",
+    "recommended": true,
+    "confidence": 95
+  },
+  {
+    "id": 2,
+    "title": "Pengertian Narkoba dan Bahaya Narkoba bagi Kesehatan",
+    "type": "artikel",
+    "duration": "10",
+    "icon": "📄",
+    "description": "Artikel komprehensif tentang pengertian, jenis, dan dampak narkoba bagi kesehatan.",
+    "fullDescription": "Artikel ini membahas pengertian narkoba, jenis-jenis narkoba berdasarkan golongan, serta dampak negatifnya terhadap kesehatan fisik dan mental. Termasuk risiko ketergantungan, gangguan organ tubuh, halusinasi, penurunan kesadaran, dan kematian.",
+    "content": "Apa Itu Narkoba?\nNarkoba (narkotika dan obat-obatan) adalah zat yang dapat menimbulkan perubahan fungsi tubuh seperti penurunan kesadaran, halusinasi, dan perubahan daya rangsang saraf. Narkoba juga memiliki potensi kecanduan yang tinggi jika disalahgunakan.\n\nJenis-Jenis Narkoba\n🧪 Golongan I: Contoh ganja, opium, tanaman koka. Tidak digunakan untuk terapi medis. Risiko ketergantungan sangat tinggi.\n🧪 Golongan II: Contoh morfin, alfaprodina. Bisa digunakan untuk pengobatan sesuai resep dokter, tapi masih berisiko ketergantungan.\n🧪 Golongan III: Digunakan untuk pengobatan/terapi dengan risiko ketergantungan lebih ringan.\n\nNarkotika dapat bersifat alami, semi sintetis, atau sintetis.\n\n🧠 Dampak dan Bahaya Narkoba\n- Dehidrasi & gangguan fisik: Kehilangan cairan, kejang, kerusakan otak.\n- Halusinasi & gangguan pikiran: Mual, muntah, kecemasan, gangguan emosi.\n- Penurunan kesadaran: Koordinasi tubuh terganggu, kebingungan, hilang ingatan.\n- Risiko kematian: Overdosis zat seperti sabu-sabu, opium, kokain bisa fatal.\n- Gangguan kualitas hidup: Menurunkan konsentrasi, masalah keuangan, merusak hubungan keluarga, risiko hukum.\n\nPesan Penting\nPenggunaan narkoba hanya boleh untuk kepentingan medis di bawah pengawasan dokter. Penyalahgunaan di luar itu berpotensi merusak fisik, mental, dan sosial.",
+    "sources": [
+      {
+        "name": "BNN - Pengertian & Bahaya Narkoba",
+        "link": "https://bnn.go.id/pengertian-narkoba-dan-bahaya-narkoba-bagi-kesehatan"
+      }
+    ],
+    "category": "pengetahuan",
+    "imageUrl": "/images/artikel.png",
+    "recommended": true,
+    "confidence": 88
+  },
+  {
+    "id": 3,
+    "title": "Apa itu Adiksi?",
+    "type": "infografis",
+    "duration": "5",
+    "icon": "📊",
+    "description": "Visualisasi mekanisme ketergantungan (adiksi) pada otak.",
+    "fullDescription": "Infografis ini menjelaskan bahwa adiksi bukan sekadar kebiasaan buruk, melainkan kondisi kompleks yang melibatkan ketergantungan fisik dan psikologis terhadap zat adiktif. \n\nBerikut adalah poin-poin kunci yang dibahas:\n1. Apa itu Adiksi?: Kondisi yang memicu perubahan perilaku akibat ketergantungan zat, yang melibatkan masalah kompleks seperti perubahan ekspresi verbal dan non-verbal.\n2. Siklus Perilaku Negatif: Penjelasan mengenai bagaimana ketidaknyamanan fisik mendorong penggunaan berulang, yang pada akhirnya memperparah kondisi psikologis pecandu.\n3. Sifat Penyakit: Adiksi dikategorikan sebagai penyakit kronis yang tidak bisa 'sembuh' total, namun dapat dikelola melalui proses pemulihan yang disiplin.\n4. Pemulihan Seumur Hidup: Menekankan bahwa proses untuk bangkit dari jerat narkoba adalah perjalanan panjang yang berlangsung sepanjang usia.\n\nPesan utama dari materi ini adalah \"Tidak Ada Kata Terlambat\", karena selalu ada kesempatan bagi setiap individu untuk selamat dan pulih dari jerat narkoba.",
+    "imageUrl": "/images/adiksi.png",
+    "category": "pengetahuan",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 4,
+    "title": "Program Pasca Rehabilitasi Badan Narkotika Nasional Republik Indonesia",
+    "type": "video",
+    "duration": "3",
+    "icon": "🎥",
+    "description": "Program lanjutan BNN RI melalui pendekatan Intervensi Berbasis Masyarakat (IBM).",
+    "fullDescription": "Video ini menjelaskan tentang layanan Pasca Rehabilitasi yang diselenggarakan oleh BNN RI sebagai bentuk rehabilitasi berkelanjutan. Program ini berfokus pada:\n    \n1. Pendekatan Intervensi Berbasis Masyarakat (IBM): Strategi pemulihan yang dilakukan dari, oleh, dan untuk masyarakat.\n2. Peran Agen Pemulihan: Anggota masyarakat yang dilatih BNN untuk mendampingi klien di tingkat desa atau kelurahan.\n3. Pencegahan Kekambuhan: Meliputi pemantauan rutin melalui kunjungan rumah atau media sosial, serta membantu klien mengidentifikasi pemicu kekambuhan (sugesti).\n4. Pengembangan Coping Skill: Memberikan pembekalan kemampuan pengalihan ke kegiatan positif seperti olahraga, keagamaan, dan konseling.\n\nTujuan akhir dari program ini adalah agar mantan penyalahguna narkoba dapat berfungsi sosial kembali secara penuh di lingkungannya",
+    "videoUrl": "https://www.youtube.com/embed/VyTUwGahWAw",
+    "imageUrl": "/images/program.png",
+    "category": "program",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 5,
+    "title": "Apa Itu Narkoba? Mengapa Narkoba Berbahaya? Bagaimana Agar Terhindar Narkoba?",
+    "type": "video",
+    "duration": "10",
+    "icon": "🎥",
+    "description": "Edukasi komprehensif mengenai definisi narkoba, jenis-jenisnya berdasarkan golongan, dampak negatif bagi kesehatan.",
+    "fullDescription": "Video edukasi ini membahas secara mendalam tentang bahaya narkoba bagi remaja dan masyarakat umum, yang mencakup:\n\n1. Definisi Narkoba: Zat yang memengaruhi pikiran, perasaan, dan perilaku, serta menyebabkan ketergantungan fisik dan mental.\n2. Penggolongan Narkoba: Penjelasan mengenai Narkotika, Psikotropika, dan Bahan Adiktif lainnya, serta pembagian Golongan I, II, dan III berdasarkan risiko kecanduan.\n3. Dampak Penyalahgunaan: Menjelaskan efek dehidrasi, halusinasi, gangguan kesadaran, penurunan kualitas hidup, hingga risiko kematian akibat overdosis.\n4. Ciri-Ciri Pengguna: Mengenali tanda fisik dan perubahan perilaku seperti mata merah, tidak fokus, dan mudah marah.\n5. Strategi Pencegahan: Langkah praktis untuk menghindar, mulai dari meningkatkan iman, selektif memilih teman, hingga berani berkata \"TIDAK\" pada tawaran yang mencurigakan.\n\nVideo ini juga menekankan pentingnya peran BNN dan Kepolisian dalam menangani masalah narkotika di Indonesia.",
+    "videoUrl": "https://www.youtube.com/embed/ZhYszcLbDIo",
+    "imageUrl": "/images/narkoba.png",
+    "category": "pengetahuan",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 6,
+    "title": "Peran Keluarga dalam mencegah penyelahgunaan narkoba bagi anak",
+    "type": "infografis",
+    "duration": "3",
+    "icon": "📄",
+    "description": "Panduan bagi keluarga dalam upaya mencegah penyalahgunaan narkoba pada pada anak.",
+    "fullDescription": "Keluarga adalah garis pertahanan terdepan dalam mencegah penyalahgunaan narkoba. Infografis ini merangkum 5 pilar utama peran orang tua:\n1. Komunikasi Terbuka: Menciptakan ruang aman di mana anak merasa didengar tanpa dihakimi, sehingga mereka lebih terbuka mengenai masalahnya.\n2. Penanaman Karakter: Membekali anak dengan nilai kejujuran dan keberanian untuk berkata \"TIDAK\" pada tekanan teman sebaya.\n3. Pengawasan Reflektif: Mengenali lingkungan pertemanan dan perubahan perilaku anak dengan pendekatan kasih sayang, bukan otoriter.\n4. Ikatan Emosional: Meluangkan waktu berkualitas untuk membangun rasa aman dan kepercayaan diri pada anak.\n5. Keteladanan: Menyadari bahwa perilaku orang tua adalah contoh nyata yang akan ditiru oleh anak dalam mengambil keputusan.\n\nInvestasi waktu dan perhatian hari ini adalah kunci masa depan anak yang bebas dari narkoba.",
+    "imageUrl": "/images/peran.keluarga.png",
+    "category": "keluarga",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 7,
+    "title": "Pencegahan Relaps dan Maintenance",
+    "type": "infografis",
+    "duration": "3",
+    "icon": "📊",
+    "description": "Strategi mencegah kambuh setelah rehabilitasi.",
+    "fullDescription": "Relapse atau kekambuhan sering terjadi dalam proses pemulihan dari ketergantungan narkoba. Namun penting untuk dipahami bahwa relapse bukanlah kegagalan, melainkan bagian dari proses pemulihan yang membutuhkan perhatian dan dukungan.\n\nKekambuhan biasanya terjadi melalui tiga tahapan. Dimulai dari tahap emosional, ketika seseorang mulai merasa stres, lelah, atau tertekan. Kemudian berlanjut ke tahap mental, di mana muncul pikiran atau keinginan untuk kembali menggunakan. Jika tidak ditangani, tahap ini dapat berakhir pada relapse fisik, yaitu penggunaan kembali zat terlarang.\n\nAda beberapa faktor pemicu yang sering menyebabkan relapse, seperti stres, emosi negatif, kembali ke lingkungan lama, serta kurangnya dukungan sosial dari keluarga dan orang terdekat.\n\nTanda-tanda relapse juga dapat muncul secara fisik maupun psikologis. Secara fisik misalnya gejala putus zat, kelelahan ekstrem, atau sulit tidur. Sedangkan secara psikologis dapat berupa stres berat, kecemasan, depresi, hingga munculnya kembali kenangan masa lalu yang memicu keinginan menggunakan.\n\nNamun relapse dapat dicegah. Strategi pencegahan dapat dilakukan dengan mengelola stres melalui aktivitas positif seperti olahraga, hobi, atau kegiatan spiritual. Selain itu, penting untuk membangun sistem dukungan dengan menjauhi lingkungan yang berisiko serta aktif mengikuti kelompok pendukung atau sesi terapi.",
+    "imageUrl": "/images/relaps.png",
+    "category": "pencegahan",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 8,
+    "title": "Apa itu IBM (intervensi berbasis masyarakat)?",
+    "type": "video",
+    "duration": "5",
+    "icon": "🎥",
+    "description": "memahami alur layanan IBM dan peran IBM dalam maryarakat",
+    "fullDescription": "Relapse atau kekambuhan sering terjadi dalam proses pemulihan dari ketergantungan narkoba. Namun penting untuk dipahami bahwa relapse bukanlah kegagalan, melainkan bagian dari proses pemulihan yang membutuhkan perhatian dan dukungan.\n\nKekambuhan biasanya terjadi melalui tiga tahapan. Dimulai dari tahap emosional, ketika seseorang mulai merasa stres, lelah, atau tertekan. Kemudian berlanjut ke tahap mental, di mana muncul pikiran atau keinginan untuk kembali menggunakan. Jika tidak ditangani, tahap ini dapat berakhir pada relapse fisik, yaitu penggunaan kembali zat terlarang.\n\nAda beberapa faktor pemicu yang sering menyebabkan relapse, seperti stres, emosi negatif, kembali ke lingkungan lama, serta kurangnya dukungan sosial dari keluarga dan orang terdekat.\n\nTanda-tanda relapse juga dapat muncul secara fisik maupun psikologis. Secara fisik misalnya gejala putus zat, kelelahan ekstrem, atau sulit tidur. Sedangkan secara psikologis dapat berupa stres berat, kecemasan, depresi, hingga munculnya kembali kenangan masa lalu yang memicu keinginan menggunakan.\n\nNamun relapse dapat dicegah. Strategi pencegahan dapat dilakukan dengan mengelola stres melalui aktivitas positif seperti olahraga, hobi, atau kegiatan spiritual. Selain itu, penting untuk membangun sistem dukungan dengan menjauhi lingkungan yang berisiko serta aktif mengikuti kelompok pendukung atau sesi terapi.",
+    "videoUrl": "https://www.youtube.com/embed/RMngbWaNu-0",
+    "imageUrl": "/images/ibm.png",
+    "category": "program",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 9,
+    "title": "Panduan mengelola stres atau coping strategy",
+    "type": "infografis",
+    "duration": "3",
+    "icon": "📊",
+    "description": "Cara mengelola stess dapat di kontrol dalam diri kita sendiri dengan metode coping tools.",
+    "fullDescription": "Materi ini menjelaskan cara menghadapi stres dengan strategi yang tepat:\n1. Definisi Alat Koping: Praktik dan kebiasaan untuk membantu seseorang menoleransi serta mengurangi stres dalam hidup.\n2. Hindari Koping Tidak Sehat: Penggunaan zat adiktif dan hubungan buruk hanya memberikan kelegaan sementara dan justru menciptakan masalah baru.\n3. Strategi Koping Sehat: Karena alat koping bersifat personal, penting untuk menemukan apa yang paling efektif bagi diri sendiri.\n4. Praktik Mindfulness: Menggunakan jurnal, meditasi, atau fokus menyelesaikan tugas spesifik seperti merapikan rumah.\n5. Aktivitas Fisik: Olahraga membantu melepaskan bahan kimia alami (endorfin) untuk mengatasi rasa sakit dan stres.\n6. Pengaturan Ritme: Menjadwalkan istirahat dan menghabiskan waktu di luar ruangan tanpa gangguan ponsel.\n\nMembangun alat koping yang sehat adalah langkah kunci dalam mencegah penyalahgunaan zat sebagai pelarian stres.",
+    "imageUrl": "/images/coping.png",
+    "category": "kesehatan",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 10,
+    "title": "Bagaimana menerapkan pola hidup sehat yang baik?",
+    "type": "infografis",
+    "duration": "3",
+    "icon": "📊",
+    "description": "Panduan pola hidup sehat serta langkah-langkah nyata hidup sehat.",
+    "fullDescription": "Pola hidup sehat bukan hanya tentang makan makanan bergizi atau berolahraga, tetapi merupakan kebiasaan sehari-hari yang menjaga keseimbangan tubuh dan pikiran. \nDengan mengonsumsi nutrisi seimbang, memperbanyak sayur dan buah, cukup minum air, beristirahat dengan baik, serta rutin melakukan aktivitas fisik, tubuh akan memiliki daya tahan yang lebih kuat terhadap berbagai penyakit.\n\nSebaliknya, kebiasaan seperti mengonsumsi makanan olahan, gula berlebih, merokok, dan kurang aktivitas fisik dapat meningkatkan risiko penyakit kronis seperti obesitas, diabetes, penyakit jantung, stroke, dan hipertensi. \nOleh karena itu, menjaga pola hidup sehat sejak dini merupakan langkah penting untuk meningkatkan kualitas hidup dan menjaga kesehatan jangka panjang.",
+    "imageUrl": "/images/polahidupsehat.png",
+    "category": "pola hidup sehat",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 11,
+    "title": "Alur rehabilitas rawat jalan dan rawat inap",
+    "type": "infografis",
+    "duration": "3",
+    "icon": "📊",
+    "description": "menjelaskan alur layanan rehabilitasi BNN mulai dari proses skrining, asesmen, hingga pilihan perawatan rawat jalan atau rawat inap bagi penyalahguna narkoba.",
+    "fullDescription": "Proses rehabilitasi dimulai dari tahap pintu masuk yaitu skrining dan asesmen. Pada tahap ini dilakukan pemeriksaan awal untuk mengetahui kondisi klien, tingkat ketergantungan, serta faktor sosial yang mempengaruhi. Tahapan ini meliputi skrining, asesmen medis dan sosial, serta penyusunan rencana terapi yang sesuai dengan kebutuhan klien.\n\nSetelah proses asesmen, klien dapat menjalani dua jenis layanan rehabilitasi, yaitu rawat jalan atau rawat inap.\n\nRawat jalan diperuntukkan bagi klien dengan tingkat ketergantungan ringan hingga sedang yang masih mampu menjalankan aktivitas sehari-hari seperti sekolah atau bekerja serta memiliki dukungan keluarga yang kuat. Program ini biasanya berlangsung sekitar 8–12 sesi konseling dan dilakukan di fasilitas kesehatan seperti klinik BNN, puskesmas, atau rumah sakit daerah. Kegiatan utama dalam program ini meliputi konseling individu maupun kelompok, pemeriksaan kesehatan, serta bimbingan spiritual untuk memperkuat pemulihan.\n\nSementara itu, rawat inap ditujukan bagi klien dengan tingkat ketergantungan sedang hingga berat, membutuhkan pengawasan intensif selama 24 jam, atau berasal dari lingkungan yang tidak mendukung proses pemulihan. Program rawat inap umumnya berlangsung selama 3 hingga 6 bulan di balai atau loka rehabilitasi BNN. Program ini mencakup detoksifikasi medis, terapi komunitas (therapeutic community), serta pelatihan vokasional dan keterampilan untuk membantu klien kembali produktif di masyarakat.\n\nSecara umum, proses rehabilitasi terdiri dari tiga tahapan utama yaitu tahap medis (detoksifikasi dan stabilisasi), tahap sosial (konseling dan terapi perilaku), serta tahap pascarehabilitasi yang berfokus pada pendampingan dan pemulihan jangka panjang.\n\nLayanan rehabilitasi yang disediakan oleh BNN memiliki beberapa keunggulan, di antaranya layanan diberikan secara gratis, bersifat sukarela dan rahasia, serta didampingi oleh tenaga profesional seperti dokter, konselor, dan tenaga kesehatan lainnya.\n\nMelalui alur rehabilitasi ini diharapkan para penyalahguna narkoba dapat memperoleh kesempatan untuk pulih dan kembali menjalani kehidupan yang sehat, produktif, dan bebas dari narkoba.",
+    "imageUrl": "/images/layananbnn.png",
+    "category": "program",
+    "recommended": false,
+    "confidence": 0
+  },
+  {
+    "id": 12,
+    "title": "Terapi Kognitif Perilaku (CBT) dalam Rehabilitasi Penyalahgunaan Narkoba",
+    "type": "artikel",
+    "duration": "10",
+    "icon": "📄",
+    "description": "Memahami Cognitive Behavioral Therapy (CBT).",
+    "fullDescription": "Artikel ini membahas konsep Cognitive Behavioral Therapy (CBT) atau Terapi Kognitif Perilaku serta penerapannya dalam program rehabilitasi penyalahgunaan narkoba. CBT membantu individu mengenali hubungan antara pikiran, perasaan, dan perilaku sehingga mampu mengubah pola pikir negatif, mengatasi pemicu penggunaan narkoba, serta membangun strategi koping yang lebih sehat untuk mendukung proses pemulihan.",
+    "content": "Cognitive Behavioral Therapy (CBT) atau Terapi Kognitif Perilaku merupakan metode terapi psikologis yang banyak digunakan dalam program rehabilitasi penyalahgunaan narkoba. Terapi ini membantu individu memahami hubungan antara pikiran, perasaan, dan perilaku, sehingga mereka dapat mengubah pola pikir dan kebiasaan negatif yang memicu penggunaan narkoba menjadi perilaku yang lebih sehat.\n\nDalam proses pemulihan, seseorang yang pernah mengalami ketergantungan narkoba sering menghadapi berbagai tantangan seperti stres, tekanan lingkungan, atau keinginan untuk kembali menggunakan zat. CBT membantu individu mengenali pemicu tersebut serta mengembangkan cara yang lebih sehat untuk menghadapinya.\n\nDalam rehabilitasi narkoba, CBT biasanya dilakukan melalui beberapa tahapan. Pertama, individu dibantu untuk mengidentifikasi situasi atau kondisi yang dapat memicu keinginan menggunakan narkoba. Kedua, individu belajar mengenali pola pikir negatif yang muncul secara otomatis, seperti merasa tidak mampu berubah atau merasa tidak memiliki harapan.\n\nSelanjutnya, melalui teknik restrukturisasi kognitif, individu dilatih untuk mengganti pikiran negatif tersebut dengan pola pikir yang lebih realistis dan positif. Selain itu, terapi ini juga membantu individu mengembangkan strategi koping yang sehat seperti berolahraga, melakukan aktivitas positif, serta membangun hubungan sosial yang mendukung proses pemulihan.\n\nCBT juga berperan penting dalam pencegahan kekambuhan (relapse prevention). Dengan memahami pemicu dan mempelajari cara mengatasinya, individu dapat lebih siap menghadapi situasi berisiko dan mempertahankan gaya hidup yang sehat serta bebas dari narkoba.",
+    "sources": [
+      {
+        "name": "BNN - Pengertian Cognitive Behavioral Therapy (CBT)",
+        "link": "https://bnn.go.id/bnn-ri-lakukan-asistensi-cognitive-behavioural-therapy-sesuai/"
+      }
+    ],
+    "category": "kesehatan",
+    "imageUrl": "/images/kognitif.jpg",
+    "recommended": false,
+    "confidence": 0
+  }
+]
