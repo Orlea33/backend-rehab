@@ -31,17 +31,15 @@ app = FastAPI()
 # CORS
 from fastapi.middleware.cors import CORSMiddleware
 # Ganti dengan domain frontend saat deploy
-allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
-ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origins=[origin.strip() for origin in ALLOWED_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # HAPUS fungsi get_current_user dan require_admin yang lama (menggunakan header)
 # def get_current_user(x_user_id: int = Header(..., alias="X-User-Id"), db: Session = Depends(get_db)):
