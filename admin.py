@@ -1,17 +1,17 @@
-# Di shell atau script terpisah
 from database import SessionLocal
 from models import User
-import bcrypt
+from passlib.hash import argon2
 
 db = SessionLocal()
-hashed = bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())
+hashed = argon2.hash("admin123")  # menghasilkan hash Argon2
+
 admin = User(
     nama="Admin",
-    password=hashed.decode('utf-8'),
+    password=hashed,
     usia=22,
     gender="L",
-    pendidikan="Sarjana",
-    kecamatan="Manado",
+    pendidikan="5",          # gunakan nilai yang sesuai dengan pilihan di form (misal "5" untuk Sarjana)
+    kecamatan="wenang",      # sesuaikan dengan pilihan kecamatan
     informed_consent=True,
     pretest_answers={},
     pretest_score=0,
@@ -23,3 +23,4 @@ admin = User(
 )
 db.add(admin)
 db.commit()
+db.close()

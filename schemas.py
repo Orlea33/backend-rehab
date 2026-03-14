@@ -52,12 +52,10 @@ class InteractionCreate(BaseModel):
     duration: Optional[int] = None
 
 class PostTestCreate(BaseModel):
-    user_id: int
     answers: Dict[str, Any]
     score: int
 
 class FeedbackCreate(BaseModel):
-    user_id: int
     rating: int
     comment: Optional[str] = None
 
@@ -91,3 +89,10 @@ class MateriUpdate(BaseModel):
     category: Optional[str] = None
     content: Optional[str] = None
     sources: Optional[List[Dict[str, str]]] = None
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    user_id: Optional[int] = None
