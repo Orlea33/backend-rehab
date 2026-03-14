@@ -31,7 +31,9 @@ app = FastAPI()
 # CORS
 from fastapi.middleware.cors import CORSMiddleware
 # Ganti dengan domain frontend saat deploy
-ALLOWED_ORIGINS = ["https://rehab-bersinar.vercel.app/"]
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
+ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
