@@ -19,6 +19,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.responses import JSONResponse 
+from database import SessionLocal, engine, get_db
 
 load_dotenv()
 
@@ -39,13 +40,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dependency DB
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # HAPUS fungsi get_current_user dan require_admin yang lama (menggunakan header)
 # def get_current_user(x_user_id: int = Header(..., alias="X-User-Id"), db: Session = Depends(get_db)):
