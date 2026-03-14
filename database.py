@@ -3,14 +3,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Ambil DATABASE_URL dari environment variable, fallback ke SQLite lokal untuk pengembangan
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+# Ambil DATABASE_URL dari environment, bersihkan spasi/newline
+raw_url = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+SQLALCHEMY_DATABASE_URL = raw_url.strip()
 
-# Railway menggunakan "postgres://" tetapi SQLAlchemy memerlukan "postgresql://"
+# Railway menggunakan "postgres://", SQLAlchemy butuh "postgresql://"
 if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Untuk SQLite perlu argumen tambahan agar bisa digunakan di multi-thread
+# Untuk SQLite perlu argumen khusus
 connect_args = {}
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}

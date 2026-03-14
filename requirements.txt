@@ -8,3 +8,6 @@ joblib
 python-multipart
 python-dotenv
 bcrypt
+python-jose[cryptography]
+passlib[argon2]
+python-multipart
