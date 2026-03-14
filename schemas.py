@@ -21,7 +21,7 @@ class UserOut(BaseModel):
     group: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MateriOut(BaseModel):
     id: int

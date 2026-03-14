@@ -13,7 +13,6 @@ __pycache__/
 *.db
 
 # ML model files
-*.pkl
 
 # OS files
 .DS_Store
