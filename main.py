@@ -546,6 +546,7 @@ def get_stats(db: Session = Depends(get_db)):
 
 # ========== ENDPOINTS ADMIN ==========
 
+
 @app.get("/admin/users")
 def admin_get_users(
     admin: models.User = Depends(get_current_admin_user), 
@@ -553,22 +554,43 @@ def admin_get_users(
     skip: int = 0,
     limit: int = 100
 ):
-    users = db.query(models.User).offset(skip).limit(limit).all()
-    return [
-        {
-            "id": u.id,
-            "nama": u.nama,
-            "usia": u.usia,
-            "gender": u.gender,
-            "pendidikan": u.pendidikan,
-            "kecamatan": u.kecamatan,
-            "pretest_score": u.pretest_score,
-            "group": u.group,
-            "created_at": u.created_at,
-            "is_admin": u.is_admin
-        }
-        for u in users
-    ]
+    # Subquery untuk mendapatkan post-test terbaru per user
+    latest_posttest = (
+        db.query(
+            models.PostTest.user_id,
+            models.PostTest.score.label('posttest_score')
+        )
+        .distinct(models.PostTest.user_id)
+        .order_by(models.PostTest.user_id, desc(models.PostTest.submitted_at))
+        .subquery()
+    )
+    
+    # Query users dengan left join ke subquery post-test
+    users = (
+        db.query(models.User, latest_posttest.c.posttest_score)
+        .outerjoin(latest_posttest, models.User.id == latest_posttest.c.user_id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+    
+    # Format response
+    result = []
+    for user, posttest_score in users:
+        result.append({
+            "id": user.id,
+            "nama": user.nama,
+            "usia": user.usia,
+            "gender": user.gender,
+            "pendidikan": user.pendidikan,
+            "kecamatan": user.kecamatan,
+            "pretest_score": user.pretest_score,
+            "posttest_score": posttest_score,  # tambahkan field ini
+            "group": user.group,
+            "created_at": user.created_at,
+            "is_admin": user.is_admin
+        })
+    return result
 
 @app.get("/admin/feedbacks")
 def admin_get_feedbacks(
