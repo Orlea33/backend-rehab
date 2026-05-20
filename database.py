@@ -2,25 +2,37 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 
-# Ambil DATABASE_URL dari environment, bersihkan spasi/newline
-raw_url = os.getenv("DATABASE_URL", "sqlite:///./test.db")
-SQLALCHEMY_DATABASE_URL = raw_url.strip()
+# Muat variabel dari file .env
+load_dotenv()
 
-# Railway menggunakan "postgres://", SQLAlchemy butuh "postgresql://"
-if SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
-    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
+# Ambil URL database dari environment, default ke SQLite jika tidak ada
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
-# Untuk SQLite perlu argumen khusus
+# Normalisasi URL: Ubah "postgres://" menjadi "postgresql://"
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Konfigurasi tambahan untuk koneksi database
 connect_args = {}
-if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
-    connect_args = {"check_same_thread": False}
+is_sqlite = DATABASE_URL.startswith("sqlite")
 
+if is_sqlite:
+    # Khusus untuk SQLite
+    connect_args = {"check_same_thread": False}
+else:
+    # Untuk PostgreSQL (Supabase) wajib menggunakan SSL
+    connect_args = {"sslmode": "require"}
+
+# Buat engine database
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args=connect_args
+    DATABASE_URL,
+    connect_args=connect_args,
+    pool_pre_ping=True,  # Cek koneksi sebelum dipakai
 )
 
+# Buat SessionLocal dan Base seperti biasa
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

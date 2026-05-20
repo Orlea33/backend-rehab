@@ -3,10 +3,10 @@ from models import User
 from passlib.hash import argon2
 
 db = SessionLocal()
-hashed = argon2.hash("admin123")  # menghasilkan hash Argon2
+hashed = argon2.hash("adminbnn123")  # menghasilkan hash Argon2
 
 admin = User(
-    nama="Admin",
+    nama="admin",
     password=hashed,
     usia=22,
     gender="L",
@@ -17,7 +17,7 @@ admin = User(
     pretest_score=0,
     preferensi_format="campuran",
     preferensi_waktu=30,
-    preferensi_topik="program",
+    preferensi_topik="rehabilitasi",
     group="A",
     is_admin=True
 )

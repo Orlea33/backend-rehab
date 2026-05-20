@@ -1,38 +1,36 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from sqlalchemy import func, desc
 from typing import List
 import random
-import bcrypt
-from database import SessionLocal, engine
+import json
+import os
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from pydantic import BaseModel
+
+from database import engine, get_db
 import models
 import schemas
 from ml.model import load_model, load_materi
-import json
-from pydantic import BaseModel
-from sqlalchemy import func, desc
-from datetime import datetime, timedelta
 from schemas import UserUpdate, FeedbackCreate
-from fastapi.security import OAuth2PasswordRequestForm
-from auth import authenticate_user, create_access_token, get_current_active_user, get_current_admin_user, ACCESS_TOKEN_EXPIRE_MINUTES, get_password_hash
-from datetime import timedelta
-import os
-from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, HTTPException, status
-from fastapi.responses import JSONResponse 
-from database import SessionLocal, engine, get_db
+from auth import (
+    authenticate_user, create_access_token, get_current_active_user,
+    get_current_admin_user, ACCESS_TOKEN_EXPIRE_MINUTES, get_password_hash
+)
 
 load_dotenv()
 
-# Inisialisasi database
+# Inisialisasi database (buat semua tabel)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 # CORS
-from fastapi.middleware.cors import CORSMiddleware
-# Ganti dengan domain frontend saat deploy
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in ALLOWED_ORIGINS],
@@ -41,14 +39,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# HAPUS fungsi get_current_user dan require_admin yang lama (menggunakan header)
-# def get_current_user(x_user_id: int = Header(..., alias="X-User-Id"), db: Session = Depends(get_db)):
-#     ...
-
-# def require_admin(current_user: models.User = Depends(get_current_user)):
-#     ...
-
-# Load model
+# Load model ML
 model_data = load_model()
 model = model_data['model']
 pendidikan_map = model_data['pendidikan_map']
@@ -56,34 +47,26 @@ format_map = model_data['format_map']
 topik_map = model_data['topik_map']
 type_map = model_data['type_map']
 
-# Reverse mapping (opsional)
 topik_reverse = {v: k for k, v in topik_map.items()}
 type_reverse = {v: k for k, v in type_map.items()}
-
-# Load materi untuk referensi (opsional)
 materi_list = load_materi()
 
-# Schema untuk login (bisa dihapus karena pakai OAuth2 form, tapi biarkan untuk kompatibilitas jika perlu)
+# Schema untuk login JSON
 class LoginRequest(BaseModel):
     nama: str
     password: str
 
 # ========== ENDPOINTS AUTENTIKASI ==========
-
 @app.post("/register", response_model=schemas.UserOut)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # Cek apakah nama sudah ada
     existing_user = db.query(models.User).filter(models.User.nama == user.nama).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Nama sudah digunakan")
-    
-    # Gunakan passlib untuk hashing password (konsisten dengan verify)
-    hashed = get_password_hash(user.password)   # <--- PERUBAHAN DI SINI
+    hashed = get_password_hash(user.password)
     group = 'A' if random.random() < 0.5 else 'B'
-    
     db_user = models.User(
         nama=user.nama,
-        password=hashed,                         # <--- LANGSUNG PAKAI STRING HASH
+        password=hashed,
         usia=user.usia,
         gender=user.gender,
         pendidikan=user.pendidikan,
@@ -101,7 +84,6 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
-# ENDPOINT LOGIN BARU dengan OAuth2 password flow (sesuai standar)
 @app.post("/token", response_model=schemas.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authenticate_user(db, form_data.username, form_data.password)
@@ -117,7 +99,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# Endpoint login dengan JSON (untuk kompatibilitas frontend yang sudah ada)
 @app.post("/login")
 async def login_json(request: LoginRequest, db: Session = Depends(get_db)):
     user = authenticate_user(db, request.nama, request.password)
@@ -128,29 +109,26 @@ async def login_json(request: LoginRequest, db: Session = Depends(get_db)):
         data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
     return {
-        "access_token": access_token, 
+        "access_token": access_token,
         "token_type": "bearer",
         "user": {
-            "id": user.id, 
-            "nama": user.nama, 
-            "group": user.group, 
+            "id": user.id,
+            "nama": user.nama,
+            "group": user.group,
             "is_admin": user.is_admin
         }
     }
 
-# Endpoint untuk mendapatkan data user yang sedang login
 @app.get("/users/me", response_model=schemas.UserOut)
 async def read_users_me(current_user: models.User = Depends(get_current_active_user)):
     return current_user
 
-# Endpoint logout (hapus cookie jika menggunakan cookie)
 @app.post("/logout")
 async def logout(response: JSONResponse):
     response.delete_cookie("access_token")
     return {"message": "Logged out"}
 
 # ========== ENDPOINTS MATERI ==========
-
 @app.get("/contents", response_model=List[schemas.MateriOut])
 def get_contents(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return db.query(models.Materi).offset(skip).limit(limit).all()
@@ -163,18 +141,14 @@ def get_content(materi_id: int, db: Session = Depends(get_db)):
     return materi
 
 # ========== ENDPOINTS REKOMENDASI (HANYA GRUP A) ==========
-
 @app.get("/recommendations", response_model=List[schemas.RecommendationOut])
 def get_recommendations(
-    current_user: models.User = Depends(get_current_active_user), 
+    current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     user = current_user
-    
     if user.group != 'A':
         return []
-    
-    # Fitur user
     try:
         usia = user.usia
         pendidikan = pendidikan_map[user.pendidikan]
@@ -185,34 +159,28 @@ def get_recommendations(
     except KeyError as e:
         print(f"KeyError: {e}")
         raise HTTPException(status_code=400, detail=f"Invalid preference: {e}")
-    
+
     materi_db = db.query(models.Materi).all()
-    
-    # OPTIMASI: Vektorisasi prediksi
     fitur_matrix = []
     valid_materi = []
-    
     for materi in materi_db:
         try:
             m_type = type_map[materi.type]
             m_category = topik_map[materi.category]
         except KeyError:
             continue
-        
         fitur = [usia, pendidikan, gender, pretest, pref_format, pref_topik, m_type, m_category]
         fitur_matrix.append(fitur)
         valid_materi.append(materi)
-    
+
     if fitur_matrix:
         prob_matrix = model.predict_proba(fitur_matrix)[:, 1]
     else:
         prob_matrix = []
-    
+
     recommendations = []
     for materi, prob in zip(valid_materi, prob_matrix):
         confidence = round(prob * 100, 2)
-        
-        # Buat alasan
         reasons = []
         if user.preferensi_format == 'campuran' or materi.type == user.preferensi_format:
             reasons.append(f"Format {materi.type} sesuai preferensi")
@@ -222,30 +190,25 @@ def get_recommendations(
             reasons.append("Skor pretest tinggi cocok dengan artikel")
         elif pretest < 5 and materi.type == 'video':
             reasons.append("Skor pretest rendah cocok dengan video")
-        
         reason = ", ".join(reasons) if reasons else "Berdasarkan analisis profil"
-        
         recommendations.append({
             "materi": materi,
             "confidence": confidence,
             "reason": reason
         })
-    
+
     recommendations.sort(key=lambda x: x['confidence'], reverse=True)
     return recommendations
 
 # ========== ENDPOINTS TRACKING ==========
-
 @app.post("/track")
 def track_interaction(
-    interaction: schemas.InteractionCreate, 
+    interaction: schemas.InteractionCreate,
     current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
-    # Pastikan user hanya bisa track untuk dirinya sendiri
     if interaction.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Tidak bisa track untuk user lain")
-    
     db_interaction = models.Interaction(
         user_id=interaction.user_id,
         materi_id=interaction.materi_id,
@@ -257,20 +220,17 @@ def track_interaction(
     return {"status": "ok"}
 
 # ========== ENDPOINTS POST-TEST ==========
-
 @app.post("/posttest")
 def submit_posttest(
-    posttest: schemas.PostTestCreate, 
+    posttest: schemas.PostTestCreate,
     current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
-    # Cek apakah sudah pernah submit (opsional)
     existing = db.query(models.PostTest).filter(models.PostTest.user_id == current_user.id).first()
     if existing:
         raise HTTPException(status_code=400, detail="Post-test sudah pernah dikerjakan")
-    
     db_posttest = models.PostTest(
-        user_id=current_user.id,  # Ambil dari current_user, bukan dari body
+        user_id=current_user.id,
         answers=posttest.answers,
         score=posttest.score
     )
@@ -278,32 +238,24 @@ def submit_posttest(
     db.commit()
     return {"status": "ok", "score": posttest.score}
 
-# ========== ENDPOINTS PROGRESS DAN ACHIEVEMENTS ==========
-
+# ========== ENDPOINTS PROGRESS & ACHIEVEMENTS ==========
 @app.get("/user/progress")
 def get_user_progress(
     current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     user = current_user
-    
-    # Total materi
     total_materi = db.query(models.Materi).count()
-    
-    # Jumlah materi yang telah diselesaikan (action = 'complete')
     completed_count = db.query(models.Interaction).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.action == 'complete'
     ).count()
-    
-    # Total waktu belajar (dari semua interaksi close yang punya duration)
     total_duration = db.query(func.sum(models.Interaction.duration)).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.action == 'close',
         models.Interaction.duration.isnot(None)
     ).scalar() or 0
-    
-    # Hitung streak
+
     thirty_days_ago = datetime.now() - timedelta(days=30)
     interaction_dates = db.query(
         func.date(models.Interaction.timestamp)
@@ -311,10 +263,8 @@ def get_user_progress(
         models.Interaction.user_id == user.id,
         models.Interaction.timestamp >= thirty_days_ago
     ).distinct().all()
-    
     dates = [d[0] for d in interaction_dates]
     dates.sort(reverse=True)
-    
     streak = 0
     if dates:
         today = datetime.now().date()
@@ -327,21 +277,19 @@ def get_user_progress(
                     break
         else:
             streak = 0
-    
-    # Konsistensi
+
     last_7_days = [(datetime.now().date() - timedelta(days=i)) for i in range(7)]
     interaction_last_7 = db.query(func.date(models.Interaction.timestamp)).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.timestamp >= last_7_days[-1]
     ).distinct().count()
     consistency = round((interaction_last_7 / 7) * 100)
-    
-    # Ambil skor post-test terakhir
+
     last_posttest = db.query(models.PostTest).filter(
         models.PostTest.user_id == user.id
     ).order_by(desc(models.PostTest.submitted_at)).first()
     posttest_score = last_posttest.score if last_posttest else None
-    
+
     return {
         "total_materi": total_materi,
         "completed_count": completed_count,
@@ -358,10 +306,8 @@ def get_weekly_activity(
     db: Session = Depends(get_db)
 ):
     user = current_user
-
     end_date = datetime.now().date()
     start_date = end_date - timedelta(days=6)
-
     results = db.query(
         func.date(models.Interaction.timestamp).label('date'),
         func.sum(models.Interaction.duration).label('total_duration')
@@ -375,7 +321,6 @@ def get_weekly_activity(
 
     days_indonesia = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
     activity = []
-
     for i in range(7):
         day = start_date + timedelta(days=i)
         total = next((r.total_duration for r in results if r.date == day), 0)
@@ -384,7 +329,6 @@ def get_weekly_activity(
             "day": days_indonesia[day.weekday()],
             "minutes": minutes
         })
-
     return activity
 
 @app.get("/user/achievements")
@@ -393,26 +337,21 @@ def get_user_achievements(
     db: Session = Depends(get_db)
 ):
     user = current_user
-    
-    # Hitung data yang diperlukan
     completed_count = db.query(models.Interaction).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.action == 'complete'
     ).count()
-    
     artikel_count = db.query(models.Interaction).join(models.Materi).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.action == 'complete',
         models.Materi.type == 'artikel'
     ).count()
-    
     video_count = db.query(models.Interaction).join(models.Materi).filter(
         models.Interaction.user_id == user.id,
         models.Interaction.action == 'complete',
         models.Materi.type == 'video'
     ).count()
-    
-    # Streak
+
     thirty_days_ago = datetime.now() - timedelta(days=30)
     interaction_dates = db.query(
         func.date(models.Interaction.timestamp)
@@ -434,88 +373,40 @@ def get_user_achievements(
                     break
         else:
             streak = 0
-    
-    # Post-test score
+
     last_posttest = db.query(models.PostTest).filter(
         models.PostTest.user_id == user.id
     ).order_by(desc(models.PostTest.submitted_at)).first()
     posttest_score = last_posttest.score if last_posttest else 0
-    
-    # Hitung total materi (cache agar tidak query berulang)
     total_materi = db.query(models.Materi).count()
-    
+
     achievements = [
-        {
-            "icon": "🌟",
-            "name": "First Step",
-            "desc": "Selesaikan 1 modul",
-            "unlocked": completed_count >= 1,
-            "date": None
-        },
-        {
-            "icon": "📖",
-            "name": "Bookworm",
-            "desc": "Baca 3 artikel",
-            "unlocked": artikel_count >= 3,
-            "progress": min(artikel_count, 3),
-            "total": 3
-        },
-        {
-            "icon": "🎥",
-            "name": "Video Learner",
-            "desc": "Tonton 2 video",
-            "unlocked": video_count >= 2,
-            "progress": min(video_count, 2),
-            "total": 2
-        },
-        {
-            "icon": "🔥",
-            "name": "On Fire",
-            "desc": "7 hari streak",
-            "unlocked": streak >= 7,
-            "progress": min(streak, 7),
-            "total": 7
-        },
-        {
-            "icon": "🏆",
-            "name": "Master",
-            "desc": "Selesaikan semua modul",
-            "unlocked": completed_count >= total_materi,
-            "progress": min(completed_count, total_materi),
-            "total": total_materi
-        },
-        {
-            "icon": "🧠",
-            "name": "Knowledge Keeper",
-            "desc": "Post-test >90%",
-            "unlocked": posttest_score >= 14,
-            "progress": posttest_score,
-            "total": 15
-        }
+        {"icon": "🌟", "name": "First Step", "desc": "Selesaikan 1 modul", "unlocked": completed_count >= 1},
+        {"icon": "📖", "name": "Bookworm", "desc": "Baca 3 artikel", "unlocked": artikel_count >= 3, "progress": min(artikel_count, 3), "total": 3},
+        {"icon": "🎥", "name": "Video Learner", "desc": "Tonton 2 video", "unlocked": video_count >= 2, "progress": min(video_count, 2), "total": 2},
+        {"icon": "🔥", "name": "On Fire", "desc": "7 hari streak", "unlocked": streak >= 7, "progress": min(streak, 7), "total": 7},
+        {"icon": "🏆", "name": "Master", "desc": "Selesaikan semua modul", "unlocked": completed_count >= total_materi, "progress": min(completed_count, total_materi), "total": total_materi},
+        {"icon": "🧠", "name": "Knowledge Keeper", "desc": "Post-test >90%", "unlocked": posttest_score >= 14, "progress": posttest_score, "total": 15}
     ]
-    
     return achievements
 
 # ========== ENDPOINTS UPDATE PROFIL ==========
-
 @app.put("/users/me", response_model=schemas.UserOut)
 def update_user(
-    user_update: UserUpdate, 
+    user_update: UserUpdate,
     current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
     update_data = user_update.dict(exclude_unset=True)
     for key, value in update_data.items():
         setattr(current_user, key, value)
-    
     db.commit()
     return current_user
 
 # ========== ENDPOINTS FEEDBACK ==========
-
 @app.post("/feedback")
 def create_feedback(
-    feedback: schemas.FeedbackCreate,  # pastikan skema ini tidak punya user_id
+    feedback: schemas.FeedbackCreate,
     current_user: models.User = Depends(get_current_active_user),
     db: Session = Depends(get_db)
 ):
@@ -530,7 +421,6 @@ def create_feedback(
     return {"message": "Feedback submitted"}
 
 # ========== ENDPOINTS STATISTIK PUBLIK ==========
-
 @app.get("/stats")
 def get_stats(db: Session = Depends(get_db)):
     total_users = db.query(models.User).count()
@@ -545,16 +435,13 @@ def get_stats(db: Session = Depends(get_db)):
     }
 
 # ========== ENDPOINTS ADMIN ==========
-
-
 @app.get("/admin/users")
 def admin_get_users(
-    admin: models.User = Depends(get_current_admin_user), 
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db),
     skip: int = 0,
     limit: int = 100
 ):
-    # Subquery untuk mendapatkan post-test terbaru per user
     latest_posttest = (
         db.query(
             models.PostTest.user_id,
@@ -564,8 +451,6 @@ def admin_get_users(
         .order_by(models.PostTest.user_id, desc(models.PostTest.submitted_at))
         .subquery()
     )
-    
-    # Query users dengan left join ke subquery post-test
     users = (
         db.query(models.User, latest_posttest.c.posttest_score)
         .outerjoin(latest_posttest, models.User.id == latest_posttest.c.user_id)
@@ -573,8 +458,6 @@ def admin_get_users(
         .limit(limit)
         .all()
     )
-    
-    # Format response
     result = []
     for user, posttest_score in users:
         result.append({
@@ -585,7 +468,7 @@ def admin_get_users(
             "pendidikan": user.pendidikan,
             "kecamatan": user.kecamatan,
             "pretest_score": user.pretest_score,
-            "posttest_score": posttest_score,  # tambahkan field ini
+            "posttest_score": posttest_score,
             "group": user.group,
             "created_at": user.created_at,
             "is_admin": user.is_admin
@@ -594,7 +477,7 @@ def admin_get_users(
 
 @app.get("/admin/feedbacks")
 def admin_get_feedbacks(
-    admin: models.User = Depends(get_current_admin_user), 
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db),
     skip: int = 0,
     limit: int = 100
@@ -604,7 +487,7 @@ def admin_get_feedbacks(
 
 @app.get("/admin/materi")
 def admin_get_materi(
-    admin: models.User = Depends(get_current_admin_user), 
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db),
     skip: int = 0,
     limit: int = 100
@@ -614,9 +497,9 @@ def admin_get_materi(
 
 @app.post("/admin/materi")
 def admin_create_materi(
-    materi: schemas.MateriCreate,                            # non-default pertama
-    admin: models.User = Depends(get_current_admin_user),   # default
-    db: Session = Depends(get_db)                            # default
+    materi: schemas.MateriCreate,
+    admin: models.User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
 ):
     db_materi = models.Materi(**materi.dict())
     db.add(db_materi)
@@ -626,9 +509,9 @@ def admin_create_materi(
 
 @app.put("/admin/materi/{materi_id}")
 def admin_update_materi(
-    materi_id: int, 
-    materi_update: schemas.MateriUpdate, 
-    admin: models.User = Depends(get_current_admin_user), 
+    materi_id: int,
+    materi_update: schemas.MateriUpdate,
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db)
 ):
     db_materi = db.query(models.Materi).filter(models.Materi.id == materi_id).first()
@@ -642,8 +525,8 @@ def admin_update_materi(
 
 @app.delete("/admin/materi/{materi_id}")
 def admin_delete_materi(
-    materi_id: int, 
-    admin: models.User = Depends(get_current_admin_user), 
+    materi_id: int,
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db)
 ):
     db_materi = db.query(models.Materi).filter(models.Materi.id == materi_id).first()
@@ -655,7 +538,7 @@ def admin_delete_materi(
 
 @app.get("/admin/stats")
 def admin_stats(
-    admin: models.User = Depends(get_current_admin_user), 
+    admin: models.User = Depends(get_current_admin_user),
     db: Session = Depends(get_db)
 ):
     total_users = db.query(models.User).count()
@@ -675,8 +558,6 @@ def admin_stats(
         "group_b": group_b
     }
 
-# ========== ENDPOINT INIT MATERI (PROTEKSI ADMIN) ==========
-
 @app.post("/admin/init-materi")
 def init_materi_admin(
     admin: models.User = Depends(get_current_admin_user),
@@ -684,22 +565,22 @@ def init_materi_admin(
 ):
     if db.query(models.Materi).count() > 0:
         return {"message": "Materi already exists"}
-    
-    with open("data/materi.json", "r") as f:
+    with open("data/materi.json", "r", encoding="utf-8") as f:
         materi_list = json.load(f)
-    
     for m in materi_list:
         materi = models.Materi(
             id=m['id'],
             title=m['title'],
             type=m['type'],
-            duration=m['duration'],
+            duration=int(m['duration']),
             icon=m.get('icon', ''),
             description=m.get('description', ''),
             fullDescription=m.get('fullDescription', ''),
             videoUrl=m.get('videoUrl'),
             imageUrl=m.get('imageUrl'),
-            category=m.get('category', '')
+            category=m.get('category', ''),
+            content=m.get('content'),
+            sources=m.get('sources')
         )
         db.add(materi)
     db.commit()

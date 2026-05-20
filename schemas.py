@@ -19,6 +19,7 @@ class UserOut(BaseModel):
     id: int
     nama: str
     group: str
+    is_admin: Optional[bool] = False
 
     class Config:
         from_attributes = True
@@ -31,14 +32,14 @@ class MateriOut(BaseModel):
     icon: Optional[str] = None
     description: Optional[str] = None
     fullDescription: Optional[str] = None
-    content: Optional[str] = None  
+    content: Optional[str] = None
     sources: Optional[List[Dict[str, str]]] = None
     videoUrl: Optional[str] = None
     imageUrl: Optional[str] = None
     category: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class RecommendationOut(BaseModel):
     materi: MateriOut
@@ -48,7 +49,7 @@ class RecommendationOut(BaseModel):
 class InteractionCreate(BaseModel):
     user_id: int
     materi_id: int
-    action: str  # 'open', 'close', 'complete'
+    action: str
     duration: Optional[int] = None
 
 class PostTestCreate(BaseModel):
