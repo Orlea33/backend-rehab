@@ -382,7 +382,7 @@ def get_user_achievements(
 
     achievements = [
         {"icon": "🌟", "name": "First Step", "desc": "Selesaikan 1 modul", "unlocked": completed_count >= 1},
-        {"icon": "📖", "name": "Bookworm", "desc": "Baca 3 artikel", "unlocked": artikel_count >= 3, "progress": min(artikel_count, 3), "total": 3},
+        {"icon": "📖", "name": "Bookworm", "desc": "Baca 2 artikel", "unlocked": artikel_count >= 2, "progress": min(artikel_count, 2), "total": 2},
         {"icon": "🎥", "name": "Video Learner", "desc": "Tonton 2 video", "unlocked": video_count >= 2, "progress": min(video_count, 2), "total": 2},
         {"icon": "🔥", "name": "On Fire", "desc": "7 hari streak", "unlocked": streak >= 7, "progress": min(streak, 7), "total": 7},
         {"icon": "🏆", "name": "Master", "desc": "Selesaikan semua modul", "unlocked": completed_count >= total_materi, "progress": min(completed_count, total_materi), "total": total_materi},
@@ -532,6 +532,8 @@ def admin_delete_materi(
     db_materi = db.query(models.Materi).filter(models.Materi.id == materi_id).first()
     if not db_materi:
         raise HTTPException(status_code=404, detail="Materi not found")
+    # Hapus interaksi terkait terlebih dahulu untuk menghindari pelanggaran foreign key constraint
+    db.query(models.Interaction).filter(models.Interaction.materi_id == materi_id).delete()
     db.delete(db_materi)
     db.commit()
     return {"message": "Materi deleted"}
